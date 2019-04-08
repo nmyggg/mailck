@@ -25,6 +25,18 @@ func Check(fromEmail, checkEmail string) (result Result, err error) {
 	return CheckMailbox(fromEmail, checkEmail)
 }
 
+func CheckWithoutConnect(checkEmail string) (result Result, err error) {
+	if !CheckSyntax(checkEmail) {
+		return InvalidSyntax, nil
+	}
+
+	if CheckDisposable(checkEmail) {
+		return Disposable, nil
+	}
+
+	return ValidWithoutTestConnect, nil
+}
+
 func CheckWithContext(ctx context.Context, fromEmail, checkEmail string) (result Result, err error) {
 	if !CheckSyntax(checkEmail) {
 		return InvalidSyntax, nil

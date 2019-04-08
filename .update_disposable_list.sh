@@ -12,8 +12,8 @@ package mailck
 var DisposableDomains = map[string]bool{
 EOF
 
-curl -s  https://rawcdn.githack.com/andreis/disposable/master/domains.txt \
-     | sed  's/\(.*\)/\t"\1": true,/' >> $file
+curl -s https://raw.githubusercontent.com/andreis/disposable-email-domains/master/domains.txt \
+     | sed  's/\(.*\)/"\1": true,/' >> $file
 
 
 echo >> $file

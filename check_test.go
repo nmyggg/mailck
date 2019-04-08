@@ -38,6 +38,31 @@ func TestCheckSyntax(t *testing.T) {
 	}
 }
 
+func TestCheckWithoutConnect(t *testing.T) {
+	tests := []struct {
+		mail          string
+		result        Result
+		err           error
+		expectedState ResultState
+	}{
+		{"xxx", InvalidSyntax, nil, InvalidState},
+		{"s.mancke@sdcsdcsdcsdctarent.de", ValidWithoutTestConnect, nil, ValidState},
+		{"foo@example.com", Disposable, nil, InvalidState},
+		{"foo@mailinator.com", Disposable, nil, InvalidState},
+	}
+
+	for _, test := range tests {
+		t.Run(fmt.Sprintf("regular %v", test.mail), func(t *testing.T) {
+			start := time.Now()
+			result, err := CheckWithoutConnect(test.mail)
+			assert.Equal(t, test.result, result)
+			assert.Equal(t, test.err, err)
+			assertResultState(t, result, test.expectedState)
+			fmt.Printf("check for %30v: %-15v => %-10v (%v)\n", test.mail, time.Since(start), test.result.Result, test.result.ResultDetail)
+		})
+	}
+}
+
 func TestCheck(t *testing.T) {
 	tests := []struct {
 		mail          string
